@@ -17,6 +17,13 @@ namespace EarthSim.Components
         public String mode { get; set; }
         public Vector3 cameraPos { get; set; }
         public Vector3 playerPos { get; set; }
+
+        private int frameRate = 0;
+        private int frameCounter = 0;
+        private TimeSpan elapsedTime = TimeSpan.Zero;
+        
+        string fps = "";
+        string camPos = "";
         //public PlayerObject.Directions playerDir { get; set; }
 
         public DebugComponent(Game game)
@@ -28,7 +35,7 @@ namespace EarthSim.Components
             mode = "Unknown";
         }
 
-        /*protected override void LoadContent()
+        protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = content.Load<SpriteFont>("Fonts/gamefont");
@@ -41,12 +48,18 @@ namespace EarthSim.Components
 
         public override void Update(GameTime gameTime)
         {
+            elapsedTime += gameTime.ElapsedGameTime;
 
-        }
+            if (elapsedTime > TimeSpan.FromSeconds(1))
+            {
+                elapsedTime -= TimeSpan.FromSeconds(1);
+                frameRate = frameCounter;
+                frameCounter = 0;
+            }
+            frameCounter++;
+            fps = string.Format("FPS: {0}", frameRate);
 
-        public override void Draw(GameTime gameTime)
-        {
-            string direction = "";
+            /*string direction = "";
             switch (playerDir)
             {
                 case PlayerObject.Directions.North:
@@ -63,26 +76,32 @@ namespace EarthSim.Components
                     break;
             }
 
-            string debug = string.Format("Mode: {0}", mode);
+            string debug = string.Format("Mode: {0}", mode);*/
             string camPos = string.Format("Camera Position: {0}", cameraPos.ToString());
-            string playPos = string.Format("Player Position: {0}", playerPos.ToString());
-            string playDir = string.Format("Player Direction: {0}", direction);
+            //string playPos = string.Format("Player Position: {0}", playerPos.ToString());
+            //string playDir = string.Format("Player Direction: {0}", direction);
+        }
 
+        public override void Draw(GameTime gameTime)
+        {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(spriteFont, debug, new Vector2(33, 33), Color.Black);
-            spriteBatch.DrawString(spriteFont, debug, new Vector2(32, 32), Color.White);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(33, 13), Color.Black);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(32, 12), Color.White);
+
+            /*spriteBatch.DrawString(spriteFont, debug, new Vector2(33, 33), Color.Black);
+            spriteBatch.DrawString(spriteFont, debug, new Vector2(32, 32), Color.White);*/
 
             spriteBatch.DrawString(spriteFont, camPos, new Vector2(33, 53), Color.Black);
             spriteBatch.DrawString(spriteFont, camPos, new Vector2(32, 52), Color.White);
 
-            spriteBatch.DrawString(spriteFont, playPos, new Vector2(33, 73), Color.Black);
+            /*spriteBatch.DrawString(spriteFont, playPos, new Vector2(33, 73), Color.Black);
             spriteBatch.DrawString(spriteFont, playPos, new Vector2(32, 72), Color.White);
 
             spriteBatch.DrawString(spriteFont, playDir, new Vector2(33, 93), Color.Black);
-            spriteBatch.DrawString(spriteFont, playDir, new Vector2(32, 92), Color.White);
+            spriteBatch.DrawString(spriteFont, playDir, new Vector2(32, 92), Color.White);*/
 
             spriteBatch.End();
-        }*/
+        }
     }
 }

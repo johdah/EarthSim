@@ -21,6 +21,9 @@ namespace EarthSim
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private DebugComponent _debug;
+        private InputComponent _input;
+
         private Camera camera;
         private BasicEffect effect;
         private Matrix projection;
@@ -42,6 +45,14 @@ namespace EarthSim
             graphics.PreferredBackBufferHeight = 480;
             graphics.PreferredBackBufferWidth = 800;
             graphics.SynchronizeWithVerticalRetrace = true;
+
+            _debug = new DebugComponent(this);
+            Components.Add(_debug);
+            Services.AddService(typeof(DebugComponent), _debug);
+
+            _input = new InputComponent(this);
+            Components.Add(_input);
+            Services.AddService(typeof(InputComponent), _input);
 
             Content.RootDirectory = "Content";
         }
@@ -95,7 +106,7 @@ namespace EarthSim
             camera = new Camera(GraphicsDevice);
 
             earthEntity = new EarthEntity(this, 5f, this.Content.Load<Texture2D>("Entities/earthTexture"));
-            oceanEntity = new OceanEntity(this, 5f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
+            oceanEntity = new OceanEntity(this, 20f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
@@ -122,11 +133,17 @@ namespace EarthSim
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            camera.Update(tankEntity);
+            _input.Update();
 
             earthEntity.Update(gameTime);
             oceanEntity.Update(gameTime);
             tankEntity.Update(gameTime);
+
+            camera.Update(tankEntity);
+
+            _debug.cameraPos = camera.Position;
+            _debug.playerPos = tankEntity.GetPosition();
+            //_debug.playerDir = tank.GetDirection();
 
             base.Update(gameTime);
         }
@@ -143,6 +160,7 @@ namespace EarthSim
             effect.Projection = projection;
             effect.View = view;
             effect.World = world;
+
             earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);

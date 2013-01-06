@@ -14,7 +14,9 @@ namespace EarthSim.Entities.Abstract
 
         private float Scale = 1.0f;
         protected VertexPositionNormalTexture[] vertices;
+        private VertexBuffer vertexBuffer;
         protected int[] indices;
+        private IndexBuffer indexBuffer;
 
         protected Texture2D texture;
         protected HSL[,] heightData;
@@ -49,6 +51,26 @@ namespace EarthSim.Entities.Abstract
                         (float)Math.Sin((xMax - oldPosition.X) * Math.PI * 2.0f / xMax) * equatorRadius);
                 
                 vertices[i].Position = newPosition;
+            }
+        }
+
+        public void FixNormals()
+        {
+            for (int i = 0; i < indices.Length; i += 3)
+            {
+                Vector3 v1 = vertices[indices[i + 1]].Position - vertices[indices[i]].Position;
+                Vector3 v2 = vertices[indices[i + 2]].Position - vertices[indices[i]].Position;
+                Vector3 normal;
+                Vector3.Cross(ref v2, ref v1, out normal);
+                normal.Normalize();
+                vertices[indices[i]].Normal += normal;
+                vertices[indices[i + 1]].Normal += normal;
+                vertices[indices[i + 2]].Normal += normal;
+            }
+
+            foreach (VertexPositionNormalTexture v in vertices)
+            {
+                v.Normal.Normalize();
             }
         }
 
@@ -113,27 +135,39 @@ namespace EarthSim.Entities.Abstract
             }
         }
 
+        protected void updateData()
+        {
+            // vertexbuffer
+            vertexBuffer = new VertexBuffer(game.GraphicsDevice, typeof(VertexPositionNormalTexture), vertices.Length, BufferUsage.WriteOnly);
+            vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
+            // indexbuffer
+            indexBuffer = new IndexBuffer(game.GraphicsDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
+            indexBuffer.SetData<int>(indices);
+
+            World = Matrix.Identity;
+        }
+
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
             World *= Matrix.CreateScale(Scale);
             Scale = 1.0f;
+
             base.Update(gameTime);
         }
 
         public void Draw(BasicEffect basicEffect)
         {
-            /*basicEffect.World = World;
-            basicEffect.Texture = heightMap;
+            basicEffect.World = World;
+            basicEffect.Texture = texture;
+
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
             }
 
-            parent.GraphicsDevice.SetVertexBuffer(vb);
-            parent.GraphicsDevice.Indices = ib;
-
-            parent.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, indices.Length, 0, indices.Length / 3);*/
+            game.GraphicsDevice.SetVertexBuffer(vertexBuffer);
+            game.GraphicsDevice.Indices = indexBuffer;
+            game.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, indices.Length, 0, indices.Length / 3);
         }
     }
 }

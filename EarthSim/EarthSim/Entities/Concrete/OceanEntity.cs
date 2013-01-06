@@ -12,6 +12,15 @@ namespace EarthSim.Entities.Concrete
     {
         public OceanEntity(Game game, float radius, Texture2D texture)
             : base(game, radius, texture)
-        { }
+        {
+            //LoadHeightMap(texture);
+
+            // Initialize
+            initializeVertices();
+            initializeIndices();
+            FixNormals();
+            //ConvertToSphere(radius, width, height);
+            updateData();
+        }
     }
 }

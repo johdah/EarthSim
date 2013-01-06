@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Components\DebugComponent.cs" />
+    <Compile Include="Components\InputComponent.cs" />
     <Compile Include="Entities\Abstract\AbstractEntity.cs" />
     <Compile Include="Entities\Abstract\AbstractPlayerEntity.cs" />
     <Compile Include="Entities\Abstract\AbstractSphereEntity.cs" />

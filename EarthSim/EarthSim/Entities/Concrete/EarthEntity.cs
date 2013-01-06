@@ -14,15 +14,14 @@ namespace EarthSim.Entities.Concrete
         public EarthEntity(Game game, float radius, Texture2D texture)
             : base(game, radius, texture)
         {
-
             LoadHeightMap(texture);
 
             // Initialize
             initializeVertices();
             initializeIndices();
-            //FixNormals();
+            FixNormals();
             //ConvertToSphere(radius, width, height);
-            // TODO: Set Data
+            updateData();
         }
 
         private void LoadHeightMap(Texture2D heightMap)

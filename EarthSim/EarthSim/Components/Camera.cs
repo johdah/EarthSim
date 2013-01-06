@@ -29,6 +29,7 @@ namespace EarthSim.Components
             //Settings
             this.AspectRatio = device.DisplayMode.AspectRatio;
             this.Position = new Vector3(3, 3, 5);
+            this.Rotation = Quaternion.Identity;
             this.nearPlaneDistance = 0.1f;
             this.farPlaneDistance = 10000f;
 

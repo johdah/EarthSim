@@ -139,7 +139,7 @@ namespace EarthSim
             oceanEntity.Update(gameTime);
             tankEntity.Update(gameTime);
 
-            camera.Update(tankEntity);
+            camera.Update(earthEntity);
 
             _debug.cameraPos = camera.Position;
             _debug.playerPos = tankEntity.GetPosition();

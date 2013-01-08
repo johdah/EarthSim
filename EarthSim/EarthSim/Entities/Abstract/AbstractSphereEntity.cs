@@ -158,6 +158,7 @@ namespace EarthSim.Entities.Abstract
         public void Draw(BasicEffect basicEffect)
         {
             basicEffect.World = World;
+            basicEffect.TextureEnabled = true;
             basicEffect.Texture = texture;
 
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)

@@ -37,8 +37,6 @@ namespace EarthSim
         private SkyEntity skyEntity;
         private TankEntity tankEntity;
 
-
-        private SimplePlane simplePlane;
         private FlyingCamera fcamera;
 
         private bool isPlayerMode = false;        
@@ -119,12 +117,11 @@ namespace EarthSim
             effect = new BasicEffect(GraphicsDevice);
             camera = new Camera(GraphicsDevice);            
 
-            //earthEntity = new EarthEntity(this, 5f, this.Content.Load<Texture2D>("Entities/earthTexture"));
-            oceanEntity = new OceanEntity(this, 200f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
+            earthEntity = new EarthEntity(this, 25f, this.Content.Load<Texture2D>("Entities/earthTexture"));
+            oceanEntity = new OceanEntity(this, 20f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
-            simplePlane = new SimplePlane(GraphicsDevice, Vector3.Zero, Quaternion.Identity, 1);
 
             world = Matrix.Identity;
         }
@@ -207,18 +204,23 @@ namespace EarthSim
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;   
 
             world = Matrix.Identity;
             effect.Projection = camera.ViewProjectionMatrix;
             effect.View = camera.ViewMatrix;
             effect.World = world;
 
-            //earthEntity.Draw(effect);
+            
+            
+
+            earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
             //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
 
-            simplePlane.Draw(ref effect, ref world);
+            //simplePlane.Draw(ref effect, ref world);
 
             base.Draw(gameTime);
         }

@@ -121,7 +121,6 @@
     <Compile Include="Entities\Concrete\SkyEntity.cs" />
     <Compile Include="Entities\Concrete\TankEntity.cs" />
     <Compile Include="Entities\FlyingCamera.cs" />
-    <Compile Include="Entities\SimplePlane.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

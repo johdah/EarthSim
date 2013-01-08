@@ -21,7 +21,6 @@ namespace EarthSim.Components
         public float nearPlaneDistance { get; set; }
         public float farPlaneDistance { get; set; }
 
-
         public Camera(GraphicsDevice graphics)
         {
             this.device = graphics;
@@ -32,7 +31,6 @@ namespace EarthSim.Components
             this.Rotation = Quaternion.Identity;
             this.nearPlaneDistance = 0.1f;
             this.farPlaneDistance = 10000f;
-
 
             this.ViewMatrix = Matrix.CreateLookAt(this.Position, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
             this.ViewProjectionMatrix = Matrix.CreatePerspectiveFieldOfView(
@@ -62,7 +60,7 @@ namespace EarthSim.Components
         {
             this.Rotation = Quaternion.Lerp(this.Rotation, entity.GetRotation(), 0.1f);
 
-            Vector3 campos = new Vector3(0, 3f, -8f);
+            Vector3 campos = new Vector3(0, 2f, -4f);
             campos = Vector3.Transform(campos, Matrix.CreateFromQuaternion(this.Rotation));
             campos += entity.GetPosition();
 

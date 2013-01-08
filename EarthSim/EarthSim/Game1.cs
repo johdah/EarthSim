@@ -25,7 +25,6 @@ namespace EarthSim
         SpriteBatch spriteBatch;
 
         private DebugComponent _debug;
-        private InputComponent _input;
 
         private Camera camera;
         private FlyingCamera fcamera;
@@ -56,10 +55,6 @@ namespace EarthSim
             _debug = new DebugComponent(this);
             Components.Add(_debug);
             Services.AddService(typeof(DebugComponent), _debug);
-
-            _input = new InputComponent(this);
-            Components.Add(_input);
-            Services.AddService(typeof(InputComponent), _input);
 
             Content.RootDirectory = "Content";
         }
@@ -123,6 +118,7 @@ namespace EarthSim
                 this.Exit();
             //Read input
             IInputHandler inputHandler = (IInputHandler)Services.GetService(typeof(IInputHandler));
+
             inputAction(inputHandler.getUnhandledActions(), gameTime.ElapsedGameTime.Milliseconds);
 
             //To make the camera mov   
@@ -182,7 +178,6 @@ namespace EarthSim
                     fcamera.PerformAction(action, elapsedTime);
                 }
 
-                //airplane.PerformAction(action, elapsedTime);
             }
         }
 
@@ -192,7 +187,7 @@ namespace EarthSim
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
        {  
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;   
 
@@ -205,9 +200,7 @@ namespace EarthSim
             earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
-            //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
             tankEntity.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix, effect);
-            //tankEntity.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix, effect);
 
 
             base.Draw(gameTime);

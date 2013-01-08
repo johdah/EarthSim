@@ -16,11 +16,8 @@ namespace EarthSim.Components.Input
     {
 
         Dictionary<Keys, UserAction> _keyboardActionMappings = new Dictionary<Keys, UserAction>();
+        Dictionary<Keys, UserAction> _keyboardActionMappingsNewKeyPress = new Dictionary<Keys, UserAction>();
         KeyboardState _keyboardLastState;
-
-        Dictionary<Buttons, UserAction> _gamepadActionMappings = new Dictionary<Buttons, UserAction>();
-        GamePadState _gamepadLastState;
-
 
         List<ActionType> unhandledActions = new List<ActionType>();
 
@@ -76,19 +73,7 @@ namespace EarthSim.Components.Input
             up.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
 
             UserAction down = new UserAction(ActionType.Down);
-            down.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
-
-            UserAction playerup = new UserAction(ActionType.PlayerUp);
-            playerup.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
-
-            UserAction playerdown = new UserAction(ActionType.PlayerDown);
-            playerdown.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
-
-            UserAction playerleft = new UserAction(ActionType.PlayerLeft);
-            playerleft.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
-
-            UserAction playerright = new UserAction(ActionType.PlayerRight);
-            playerright.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
+            down.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);          
 
             UserAction switchmode = new UserAction(ActionType.SwitchMode);
             switchmode.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
@@ -111,26 +96,8 @@ namespace EarthSim.Components.Input
             _keyboardActionMappings.Add(Keys.W, up);
             _keyboardActionMappings.Add(Keys.S, down);
 
+            _keyboardActionMappingsNewKeyPress.Add(Keys.Home, switchmode);
 
-            _keyboardActionMappings.Add(Keys.I, playerup);
-            _keyboardActionMappings.Add(Keys.K, playerdown);
-            _keyboardActionMappings.Add(Keys.J, playerleft);
-            _keyboardActionMappings.Add(Keys.L, playerright);
-
-            _keyboardActionMappings.Add(Keys.Home, switchmode);
-
-            _gamepadActionMappings.Add(Buttons.RightTrigger, accelerate);
-            _gamepadActionMappings.Add(Buttons.LeftTrigger, decelerate);
-            _gamepadActionMappings.Add(Buttons.LeftThumbstickLeft, rollLeft);
-            _gamepadActionMappings.Add(Buttons.LeftThumbstickRight, rollRight);
-            _gamepadActionMappings.Add(Buttons.LeftThumbstickDown, pitchUp);
-            _gamepadActionMappings.Add(Buttons.LeftThumbstickUp, pitchDown);
-            _gamepadActionMappings.Add(Buttons.RightThumbstickLeft, yawLeft);
-            _gamepadActionMappings.Add(Buttons.RightThumbstickRight, yawRight);
-            _gamepadActionMappings.Add(Buttons.B, quit);
-
-            //_keyboardActionMappings.Add(Keys.PageUp, incSea);
-            //_keyboardActionMappings.Add(Keys.PageDown, decSea);
 
 
             base.Initialize();
@@ -143,14 +110,25 @@ namespace EarthSim.Components.Input
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
 
             foreach (Keys key in _keyboardActionMappings.Keys)
-                if (keyboardState.IsKeyDown(key) && _keyboardLastState.IsKeyUp(key))
+                if (keyboardState.IsKeyDown(key))
                     _keyboardActionMappings[key].FireEvent();
 
-            foreach (Buttons key in _gamepadActionMappings.Keys)
-                if (gamepadState.IsButtonDown(key) && _gamepadLastState.IsButtonUp(key))
-                    _gamepadActionMappings[key].FireEvent();
+            foreach (Keys key in _keyboardActionMappingsNewKeyPress.Keys)
+                if (keyboardState.IsKeyDown(key) && _keyboardLastState.IsKeyUp(key))
+                    _keyboardActionMappingsNewKeyPress[key].FireEvent();
+
+
+            _keyboardLastState = keyboardState;
+
 
             base.Update(gameTime);
+        }
+
+        public bool isNewKeyPress(Keys key)
+        {
+            KeyboardState kbs = Keyboard.GetState();
+
+            return kbs.IsKeyDown(key) && _keyboardLastState.IsKeyUp(key);
         }
 
         void action_ActionPerformed(ActionType Type)

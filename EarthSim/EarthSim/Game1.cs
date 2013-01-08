@@ -39,6 +39,7 @@ namespace EarthSim
         private SkyEntity skyEntity;
         private AbstractPlayerEntity tankEntity;
 
+        private bool isAutoSeaLevel = true;
         private bool isPlayerMode = false;        
 
         public Game1()
@@ -134,10 +135,13 @@ namespace EarthSim
 
             earthEntity.Update(gameTime);
             oceanEntity.Update(gameTime);
-            /*if (oceanEntity.GetScale() > 1.01364851)
-                oceanEntity.SetScale(1f);
-            else
-                oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);*/
+            if (isAutoSeaLevel)
+            {
+                if (oceanEntity.GetScale() > 1.01364851)
+                    oceanEntity.SetScale(1f);
+                else
+                    oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);
+            }
             tankEntity.Update(gameTime);
 
             //camera.Update(earthEntity);

@@ -93,24 +93,31 @@ namespace EarthSim.Components
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+            int leftIndent = 10;
+            int count = 11;
 
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(33, 13), Color.Black);
-            spriteBatch.DrawString(spriteFont, fps, new Vector2(32, 12), Color.White);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, fps, new Vector2(leftIndent, count), Color.White);
+            count += 21;
 
-            spriteBatch.DrawString(spriteFont, debug, new Vector2(33, 33), Color.Black);
-            spriteBatch.DrawString(spriteFont, debug, new Vector2(32, 32), Color.White);
+            spriteBatch.DrawString(spriteFont, debug, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, debug, new Vector2(leftIndent, count), Color.White);
+            count += 21;
 
-            spriteBatch.DrawString(spriteFont, camPos, new Vector2(33, 53), Color.Black);
-            spriteBatch.DrawString(spriteFont, camPos, new Vector2(32, 52), Color.White);
+            spriteBatch.DrawString(spriteFont, camPos, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, camPos, new Vector2(leftIndent, count), Color.White);
+            count += 21;
 
-            spriteBatch.DrawString(spriteFont, playPos, new Vector2(33, 73), Color.Black);
-            spriteBatch.DrawString(spriteFont, playPos, new Vector2(32, 72), Color.White);
+            spriteBatch.DrawString(spriteFont, playPos, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, playPos, new Vector2(leftIndent, count), Color.White);
+            count += 21;
 
-            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(33, 93), Color.Black);
-            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(32, 92), Color.White);
+            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(leftIndent, count), Color.White);
+            count += 21;
 
-            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(33, 113), Color.Black);
-            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(32, 112), Color.White);
+            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(leftIndent + 1, count--), Color.Black);
+            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(leftIndent, count), Color.White);
 
             /*spriteBatch.DrawString(spriteFont, playDir, new Vector2(33, 93), Color.Black);
             spriteBatch.DrawString(spriteFont, playDir, new Vector2(32, 92), Color.White);*/

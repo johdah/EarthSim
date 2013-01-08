@@ -94,8 +94,8 @@ namespace EarthSim.Components.Input
             switchmode.ActionPerformed += new UserAction.ActionEvent(action_ActionPerformed);
 
 
-            _keyboardActionMappings.Add(Keys.W, accelerate);
-            _keyboardActionMappings.Add(Keys.S, decelerate);
+            _keyboardActionMappings.Add(Keys.R, accelerate);
+            _keyboardActionMappings.Add(Keys.F, decelerate);
             _keyboardActionMappings.Add(Keys.Left, rollLeft);
             _keyboardActionMappings.Add(Keys.Right, rollRight);
             _keyboardActionMappings.Add(Keys.Down, pitchUp);
@@ -108,8 +108,8 @@ namespace EarthSim.Components.Input
 
             _keyboardActionMappings.Add(Keys.A, left);
             _keyboardActionMappings.Add(Keys.D, right);
-            _keyboardActionMappings.Add(Keys.R, up);
-            _keyboardActionMappings.Add(Keys.F, down);
+            _keyboardActionMappings.Add(Keys.W, up);
+            _keyboardActionMappings.Add(Keys.S, down);
 
 
             _keyboardActionMappings.Add(Keys.I, playerup);

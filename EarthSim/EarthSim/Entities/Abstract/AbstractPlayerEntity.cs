@@ -16,7 +16,7 @@ namespace EarthSim.Entities.Abstract
         protected float geoElevation;
         protected float geoLongitude = 0.0f;
         protected float geoLatitude = 0.0f;
-        protected float speed = 0.5f;
+        protected float speed = 0.02f;
 
         private float Direction = 0.0f;
 
@@ -39,27 +39,50 @@ namespace EarthSim.Entities.Abstract
             {
                 case ActionType.Left:
                     this.geoLongitude -= elapsedTime * speed;
-                    if (geoLongitude <= 0) geoLongitude = 360 - geoLongitude;
                     break;
                 case ActionType.Right:
                     this.geoLongitude += elapsedTime * speed;
-                    this.geoLongitude = this.geoLongitude % 360;
                     break;
                 case ActionType.Down:
-                    this.geoLatitude += elapsedTime * speed;
-                    this.geoLatitude = this.geoLatitude % 360;
+                    this.geoLatitude -= elapsedTime * speed;
                     break;
                 case ActionType.Up:
-                    this.geoLatitude -= elapsedTime * speed;
-                    if (geoLatitude <= 0) geoLatitude = 360 - geoLatitude;
+                    this.geoLatitude += elapsedTime * speed;
                     break;
-                case ActionType.IncreaseSpeed:
+                /*case ActionType.IncreaseSpeed:
                     this.speed += 0.1f;
                     break;
                 case ActionType.DecreaseSpeed:
                     this.speed -= 0.1f;
-                    break;
+                    break;*/
             }
+        }
+
+        public virtual new void Update(GameTime gameTime)
+        {
+            if (geoLatitude < -90)
+            {
+                geoLatitude = -90f;
+                geoLongitude += 90f;
+            } else if (geoLatitude > 90) {
+                geoLatitude = 90f;
+                geoLongitude += 90f;
+            }
+
+            if (geoLongitude > 90)
+            {
+                geoLongitude = 90f;
+                geoLongitude = -90f + (geoLongitude - 90f);
+            }
+            else if (geoLongitude < -90)
+            {
+                geoLongitude = 90f;
+            }
+        }
+
+        public Vector2 GetGeoPosition()
+        {
+            return new Vector2(geoLongitude, geoLatitude);
         }
 
         public abstract void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect);

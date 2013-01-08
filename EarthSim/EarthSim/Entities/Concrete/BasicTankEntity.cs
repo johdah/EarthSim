@@ -148,12 +148,9 @@ namespace EarthSim.Entities.Concrete
 
         public override void Update(GameTime gameTime)
         {
-            if (geoLatitude > 90 || geoLatitude < -90) geoLatitude = 1f;
-            if (geoLongitude > 90 || geoLongitude < -90) geoLongitude = 1f;
+            base.Update(gameTime);
 
             leftBackWheelElevation = 4f;
-
-            base.Update(gameTime);
         }
 
         public override void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect)

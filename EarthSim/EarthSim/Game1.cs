@@ -142,8 +142,9 @@ namespace EarthSim
 
             //camera.Update(earthEntity);
 
+            _debug.mode = (isPlayerMode) ? "Player" : "Camera";
             _debug.cameraPos = fcamera.Position;
-            _debug.playerPos = tankEntity.GetPosition();
+            _debug.playerPos = tankEntity.GetGeoPosition();
             //_debug.playerDir = tank.GetDirection();
 
             base.Update(gameTime);

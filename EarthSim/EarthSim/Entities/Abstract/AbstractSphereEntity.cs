@@ -75,18 +75,32 @@ namespace EarthSim.Entities.Abstract
             }
         }
 
-        public Vector3 GetGeoPosition(float latitude, float longitude, float elevation, float earthRadius)
+        public Vector3 GetGeoPosition(float latitude, float longitude, float elevation)
         {
-            earthRadius += elevation;
+            float localRadius = this.radius + elevation;
 
             float lat = latitude * (MathHelper.Pi / 180);
             float lon = longitude * (MathHelper.Pi / 180);
 
-            float x = -earthRadius * (float)Math.Cos(lat) * (float)Math.Cos(lon);
-            float y = earthRadius * (float)Math.Sin(lat);
-            float z = earthRadius * (float)Math.Cos(lat) * (float)Math.Sin(lon);
+            float x = -localRadius * (float)Math.Cos(lat) * (float)Math.Cos(lon);
+            float y = localRadius * (float)Math.Sin(lat);
+            float z = localRadius * (float)Math.Cos(lat) * (float)Math.Sin(lon);
 
             return Position = new Vector3(x, y, z);
+        }
+
+        public float GetLocalElevation(float latitude, float longitude, float prevElevation, float smoothingFactor)
+        {
+            float offset = -0.25f;
+            float maxX = heightData.GetLength(0) - 1;
+            float maxY = heightData.GetLength(1) - 1;
+
+            int x = (int) Math.Floor((longitude + 180f) / (360 / maxX));
+            int y = (int) Math.Floor(maxY - ((latitude + 90f) / (180 / maxY)));
+
+            float newElevation = -(float)((heightData[x, y].H) / 200f) - offset;
+
+            return newElevation;
         }
 
         protected void initializeIndices()

@@ -89,8 +89,8 @@ namespace EarthSim
             effect = new BasicEffect(GraphicsDevice);
             camera = new Camera(GraphicsDevice);            
 
-            earthEntity = new EarthEntity(this, 25f, this.Content.Load<Texture2D>("Entities/earthTexture"));
-            oceanEntity = new OceanEntity(this, 25.15f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
+            earthEntity = new EarthEntity(this, 50f, this.Content.Load<Texture2D>("Entities/earthTexture"));
+            oceanEntity = new OceanEntity(this, 50.15f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new BasicTankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 

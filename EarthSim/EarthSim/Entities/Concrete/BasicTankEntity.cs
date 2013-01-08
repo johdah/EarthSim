@@ -117,8 +117,12 @@ namespace EarthSim.Entities.Concrete
             this._target = target;
             //this.Position = new Vector3(0.0f, 0.0f, 0.0f);
             this.Scale = 0.001f;
+            // Sweden
             geoLatitude = 57;
             geoLongitude = 14;
+            // ??
+            //geoLatitude = 54;
+            //geoLongitude = 40;
 
             // Look up shortcut references to the bones we are going to animate.
             leftBackWheelBone = tankModel.Bones["l_back_wheel_geo"];
@@ -150,7 +154,9 @@ namespace EarthSim.Entities.Concrete
         {
             base.Update(gameTime);
 
-            leftBackWheelElevation = 4f;
+            float smoothness = 0.01f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoLongitude, smoothness);
         }
 
         public override void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect)
@@ -203,7 +209,7 @@ namespace EarthSim.Entities.Concrete
                     GetRotationForModel(out pitch, out roll, out yaw, geoLatitude, geoLongitude);
                     Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out Rotation);
                     Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
-                    this.Position = _target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, _target.GetRadius());
+                    this.Position = _target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation);
 
                     effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(Scale) * tankRotation *
                             Matrix.CreateTranslation(Position);

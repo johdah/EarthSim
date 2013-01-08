@@ -38,11 +38,11 @@ namespace EarthSim.Entities
 
             switch (action)
             {
-                case ActionType.IncreaseSpeed:
+                case ActionType.Up:
                     Vector3 forward = Vector3.Transform(new Vector3(0, 0, 1), this.Rotation);
                     this.Position += forward * moveDistance;
                     break;
-                case ActionType.DecreaseSpeed:
+                case ActionType.Down:
                     Vector3 backward = Vector3.Transform(new Vector3(0, 0, 1), this.Rotation);
                     this.Position -= backward * moveDistance;
                     break;
@@ -54,11 +54,11 @@ namespace EarthSim.Entities
                     Vector3 right = Vector3.Transform(new Vector3(1, 0, 0), this.Rotation);
                     this.Position -= right * moveDistance;
                     break;
-                case ActionType.Up:
+                case ActionType.IncreaseSpeed:
                     Vector3 up = Vector3.Transform(new Vector3(0, 1, 0), this.Rotation);
                     this.Position += up * moveDistance;
                     break;
-                case ActionType.Down:
+                case ActionType.DecreaseSpeed:
                     Vector3 down = Vector3.Transform(new Vector3(0, 1, 0), this.Rotation);
                     this.Position -= down * moveDistance;
                     break;

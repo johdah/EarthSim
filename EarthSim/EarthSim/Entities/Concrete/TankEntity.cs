@@ -134,7 +134,7 @@ namespace EarthSim.Entities.Concrete
             base.Update(gameTime);
         }
 
-        public void Draw(ref Matrix world, ref Matrix view, ref Matrix projection, ref BasicEffect effect)
+        public override void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect)
         {
             DrawModel(tankModel, projection, view, world);
         }

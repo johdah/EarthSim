@@ -12,6 +12,7 @@ using EarthSim.Components;
 using EarthSim.Entities.Concrete;
 using EarthSim.Entities;
 using EarthSim.Components.Input;
+using EarthSim.Entities.Abstract;
 
 namespace EarthSim
 {
@@ -36,9 +37,7 @@ namespace EarthSim
         private EarthEntity earthEntity;
         private OceanEntity oceanEntity;
         private SkyEntity skyEntity;
-        private TankEntity tankEntity;
-
-        private BasicTankEntity basicTank;
+        private AbstractPlayerEntity tankEntity;
 
         private bool isPlayerMode = false;        
 
@@ -97,8 +96,7 @@ namespace EarthSim
             earthEntity = new EarthEntity(this, 25f, this.Content.Load<Texture2D>("Entities/earthTexture"));
             oceanEntity = new OceanEntity(this, 25.15f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
-            tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
-            basicTank = new BasicTankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
+            tankEntity = new BasicTankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
             world = Matrix.Identity;
         }
@@ -126,8 +124,11 @@ namespace EarthSim
             IInputHandler inputHandler = (IInputHandler)Services.GetService(typeof(IInputHandler));
             inputAction(inputHandler.getUnhandledActions(), gameTime.ElapsedGameTime.Milliseconds);
 
-            //To make the camera mov           
-            camera.Update(fcamera.Position, fcamera.Rotation);
+            //To make the camera mov   
+            if (isPlayerMode)
+                camera.Update(tankEntity);
+            else
+                camera.Update(fcamera.Position, fcamera.Rotation);
 
             //_input.Update();
 
@@ -160,13 +161,13 @@ namespace EarthSim
                 //    sealevel -= 0.01f;
                 if (action == ActionType.SwitchMode)
                 {
-                    //if (this.isPlayerMode) this.isPlayerMode = false;
-                    //else this.isPlayerMode = true;
+                    if (this.isPlayerMode) this.isPlayerMode = false;
+                    else this.isPlayerMode = true;
                 }
 
                 if (isPlayerMode)
                 {
-                    //tank.performAction(action, elapsedTime);
+                    tankEntity.performAction(action, elapsedTime);
                 }
                 else
                 {
@@ -183,7 +184,7 @@ namespace EarthSim
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
-        {
+       {  
             GraphicsDevice.Clear(Color.CornflowerBlue);
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;   
@@ -198,7 +199,8 @@ namespace EarthSim
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
             //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
-            basicTank.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix);
+            tankEntity.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix, effect);
+            //tankEntity.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix, effect);
 
 
             base.Draw(gameTime);

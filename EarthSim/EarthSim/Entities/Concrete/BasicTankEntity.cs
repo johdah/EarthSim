@@ -156,7 +156,12 @@ namespace EarthSim.Entities.Concrete
             base.Update(gameTime);
         }
 
-        public void Draw(Matrix world, Matrix view, Matrix projection)
+        public override void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect)
+        {
+            DrawModel(world, view, projection);
+        }
+
+        private void DrawModel(Matrix world, Matrix view, Matrix projection)
         {
             // Set the world matrix as the root transform of the model.
             tankModel.Root.Transform = world;
@@ -201,9 +206,10 @@ namespace EarthSim.Entities.Concrete
                     GetRotationForModel(out pitch, out roll, out yaw, geoLatitude, geoLongitude);
                     Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out Rotation);
                     Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
+                    this.Position = _target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, _target.GetRadius());
 
                     effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(Scale) * tankRotation *
-                            Matrix.CreateTranslation(_target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, _target.GetRadius()));
+                            Matrix.CreateTranslation(Position);
                 }
 
                 mesh.Draw();

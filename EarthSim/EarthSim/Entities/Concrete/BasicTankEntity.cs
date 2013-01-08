@@ -156,7 +156,7 @@ namespace EarthSim.Entities.Concrete
 
             float smoothness = 0.01f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoLongitude, smoothness);
+            geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoElevation, smoothness);
 
             leftBackWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude - 1f, leftBackWheelElevation, smoothness);
             leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude + 1f, leftFrontWheelElevation, smoothness);

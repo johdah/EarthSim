@@ -96,11 +96,13 @@ namespace EarthSim.Entities.Abstract
             float maxX = heightData.GetLength(0) - 1;
             float maxY = heightData.GetLength(1) - 1;
 
-            int x = (int) Math.Floor((longitude + 180f) / (360 / maxX));
-            int y = (int) Math.Floor(maxY - ((latitude + 90f) / (180 / maxY)));
+            int x = (int) Math.Round((longitude + 180f) / (360 / maxX));
+            int y = (int) Math.Round(maxY - ((latitude + 90f) / (180 / maxY)));
 
             if (x >= 0 && x < maxX && y >= 0 && y < maxY)
                 elevation = -(float)((heightData[x, y].H) / 200f) - offset;
+
+            elevation = prevElevation + smoothingFactor * (elevation - prevElevation);
 
             return elevation;
         }

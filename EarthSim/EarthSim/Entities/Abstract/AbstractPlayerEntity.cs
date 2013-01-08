@@ -60,10 +60,10 @@ namespace EarthSim.Entities.Abstract
                     this.geoLatitude += elapsedTime * speed;
                     break;
                 case ActionType.IncreaseSpeed:
-                    this.speed += 0.1f;
+                    this.speed += 0.01f;
                     break;
                 case ActionType.DecreaseSpeed:
-                    this.speed -= 0.1f;
+                    this.speed -= 0.01f;
                     break;
             }
         }

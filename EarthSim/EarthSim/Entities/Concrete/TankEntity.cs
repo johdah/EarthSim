@@ -175,7 +175,13 @@ namespace EarthSim.Entities.Concrete
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    Matrix tankRotation;
+                    effect.World = boneTransforms[mesh.ParentBone.Index];
+                    effect.View = view;
+                    effect.Projection = projection;
+
+                    effect.EnableDefaultLighting();
+
+                    /*Matrix tankRotation;
                     float pitch = 0;
                     float roll = 0;
                     float yaw = 0;
@@ -188,8 +194,8 @@ namespace EarthSim.Entities.Concrete
                     Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out Rotation);
                     Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
 
-                    effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(0.001f) * tankRotation *
-                        Matrix.CreateTranslation(Target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, 50.0f));
+                    effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(100f) * tankRotation *
+                        Matrix.CreateTranslation(Target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, Target.GetRadius()));*/
                 }
 
                 mesh.Draw();

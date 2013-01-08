@@ -30,6 +30,7 @@ namespace EarthSim.Entities.Abstract
             : base(game)
         {
             this.radius = radius;
+            this.Scale = 1.0f;
             this.texture = texture;
         }
 
@@ -149,16 +150,25 @@ namespace EarthSim.Entities.Abstract
 
         public override void Update(GameTime gameTime)
         {
-            World *= Matrix.CreateScale(Scale);
-            Scale = 1.0f;
+            World = Matrix.CreateScale(Scale);
+            //Scale = 1.0f;
 
             base.Update(gameTime);
+        }
+
+        public float GetScale()
+        {
+            return Scale;
+        }
+
+        public void SetScale(float Scale)
+        {
+            this.Scale = Scale;
         }
 
         public void Draw(BasicEffect basicEffect)
         {
             basicEffect.World = World;
-            basicEffect.TextureEnabled = true;
             basicEffect.Texture = texture;
 
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)

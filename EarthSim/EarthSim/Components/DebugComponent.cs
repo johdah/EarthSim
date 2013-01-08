@@ -77,7 +77,7 @@ namespace EarthSim.Components
             }
 
             string debug = string.Format("Mode: {0}", mode);*/
-            string camPos = string.Format("Camera Position: {0}", cameraPos.ToString());
+            camPos = string.Format("Camera Position: {0}", cameraPos.ToString());
             //string playPos = string.Format("Player Position: {0}", playerPos.ToString());
             //string playDir = string.Format("Player Direction: {0}", direction);
         }

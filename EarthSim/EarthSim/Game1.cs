@@ -27,6 +27,7 @@ namespace EarthSim
         private InputComponent _input;
 
         private Camera camera;
+        private FlyingCamera fcamera;
         private BasicEffect effect;
         private Matrix projection;
         private Matrix view;
@@ -37,7 +38,6 @@ namespace EarthSim
         private SkyEntity skyEntity;
         private TankEntity tankEntity;
 
-        private FlyingCamera fcamera;
 
         private bool isPlayerMode = false;        
 
@@ -71,8 +71,6 @@ namespace EarthSim
         /// </summary>
         protected override void Initialize()
         {
-            InitializeCamera();
-
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
             graphics.GraphicsDevice.RasterizerState = rs;
@@ -86,28 +84,6 @@ namespace EarthSim
             base.Initialize();
         }
 
-        private void InitializeCamera()
-        {
-            /*float aspectRatio = GraphicsDevice.DisplayMode.AspectRatio;
-
-            Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.PiOver4,
-                aspectRatio,
-                0.1f,
-                1000.0f,
-                out projection);
-
-            cameraPosition = new Vector3(0f, 0f, 15f);
-            cameraTarget = new Vector3(0f, 0f, 0f);
-            cameraUpVector = Vector3.Up;
-
-            Matrix.CreateLookAt(
-               ref cameraPosition,
-               ref cameraTarget,
-               ref cameraUpVector,
-               out view);*/
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -118,10 +94,9 @@ namespace EarthSim
             camera = new Camera(GraphicsDevice);            
 
             earthEntity = new EarthEntity(this, 25f, this.Content.Load<Texture2D>("Entities/earthTexture"));
-            oceanEntity = new OceanEntity(this, 20f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
+            oceanEntity = new OceanEntity(this, 25.15f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
-
 
             world = Matrix.Identity;
         }
@@ -154,13 +129,17 @@ namespace EarthSim
 
             //_input.Update();
 
-            //earthEntity.Update(gameTime);
+            earthEntity.Update(gameTime);
             oceanEntity.Update(gameTime);
+            if (oceanEntity.GetScale() > 1.01364851)
+                oceanEntity.SetScale(1f);
+            else
+                oceanEntity.SetScale(oceanEntity.GetScale() + 0.00001f);
             tankEntity.Update(gameTime);
 
             //camera.Update(earthEntity);
 
-            _debug.cameraPos = camera.Position;
+            _debug.cameraPos = fcamera.Position;
             _debug.playerPos = tankEntity.GetPosition();
             //_debug.playerDir = tank.GetDirection();
 
@@ -211,16 +190,12 @@ namespace EarthSim
             effect.Projection = camera.ViewProjectionMatrix;
             effect.View = camera.ViewMatrix;
             effect.World = world;
-
-            
-            
+            effect.TextureEnabled = true;
 
             earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
-            //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
-
-            //simplePlane.Draw(ref effect, ref world);
+            tankEntity.Draw(ref world, ref view, ref projection, ref effect);
 
             base.Draw(gameTime);
         }

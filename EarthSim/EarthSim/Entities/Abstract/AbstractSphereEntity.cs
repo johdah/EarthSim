@@ -91,6 +91,7 @@ namespace EarthSim.Entities.Abstract
 
         public float GetLocalElevation(float latitude, float longitude, float prevElevation, float smoothingFactor)
         {
+            float elevation = 0f;
             float offset = -0.25f;
             float maxX = heightData.GetLength(0) - 1;
             float maxY = heightData.GetLength(1) - 1;
@@ -98,9 +99,10 @@ namespace EarthSim.Entities.Abstract
             int x = (int) Math.Floor((longitude + 180f) / (360 / maxX));
             int y = (int) Math.Floor(maxY - ((latitude + 90f) / (180 / maxY)));
 
-            float newElevation = -(float)((heightData[x, y].H) / 200f) - offset;
+            if (x >= 0 && x < maxX && y >= 0 && y < maxY)
+                elevation = -(float)((heightData[x, y].H) / 200f) - offset;
 
-            return newElevation;
+            return elevation;
         }
 
         protected void initializeIndices()

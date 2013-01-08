@@ -157,6 +157,18 @@ namespace EarthSim.Entities.Concrete
             float smoothness = 0.01f * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoLongitude, smoothness);
+
+            leftBackWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude - 1f, leftBackWheelElevation, smoothness);
+            leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude + 1f, leftFrontWheelElevation, smoothness);
+            rightBackWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude - 1f, rightBackWheelElevation, smoothness);
+            rightFrontWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude + 1f, rightFrontWheelElevation, smoothness);
+
+            // X rotation is (LB + RB) - (LF + RF)
+            xRotation = (leftBackWheelElevation + rightBackWheelElevation)
+                        - (leftFrontWheelElevation + rightFrontWheelElevation);
+            // Z rotation is (RB + RF) - (LB + LF)
+            zRotation = (rightBackWheelElevation + rightFrontWheelElevation)
+                        - (leftBackWheelElevation + leftFrontWheelElevation);
         }
 
         public override void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect)

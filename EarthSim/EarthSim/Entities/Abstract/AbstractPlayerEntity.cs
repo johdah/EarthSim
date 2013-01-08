@@ -24,6 +24,16 @@ namespace EarthSim.Entities.Abstract
             : base(game)
         { }
 
+        public Vector2 GetGeoPosition()
+        {
+            return new Vector2(geoLongitude, geoLatitude);
+        }
+
+        public float GetSpeed()
+        {
+            return speed;
+        }
+
         protected void GetRotationForModel(out float pitch, out float roll, out float yaw, float latitude, float longitude)
         {
             yaw = 0;
@@ -49,12 +59,12 @@ namespace EarthSim.Entities.Abstract
                 case ActionType.Up:
                     this.geoLatitude += elapsedTime * speed;
                     break;
-                /*case ActionType.IncreaseSpeed:
+                case ActionType.IncreaseSpeed:
                     this.speed += 0.1f;
                     break;
                 case ActionType.DecreaseSpeed:
                     this.speed -= 0.1f;
-                    break;*/
+                    break;
             }
         }
 
@@ -71,18 +81,12 @@ namespace EarthSim.Entities.Abstract
 
             if (geoLongitude > 90)
             {
-                geoLongitude = 90f;
                 geoLongitude = -90f + (geoLongitude - 90f);
             }
             else if (geoLongitude < -90)
             {
                 geoLongitude = 90f;
             }
-        }
-
-        public Vector2 GetGeoPosition()
-        {
-            return new Vector2(geoLongitude, geoLatitude);
         }
 
         public abstract void Draw(Matrix world, Matrix view, Matrix projection, BasicEffect effect);

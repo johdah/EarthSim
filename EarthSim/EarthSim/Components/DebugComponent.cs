@@ -17,6 +17,8 @@ namespace EarthSim.Components
         public String mode { get; set; }
         public Vector3 cameraPos { get; set; }
         public Vector2 playerPos { get; set; }
+        public float playerSpeed { get; set; }
+        public float seaLevel { get; set; }
 
         private int frameRate = 0;
         private int frameCounter = 0;
@@ -26,6 +28,8 @@ namespace EarthSim.Components
         string debug = "";
         string fps = "";
         string playPos = "";
+        string playSpeed = "";
+        string seaLvl = "";
         //public PlayerObject.Directions playerDir { get; set; }
 
         public DebugComponent(Game game)
@@ -81,6 +85,8 @@ namespace EarthSim.Components
             debug = string.Format("Mode: {0}", mode);
             camPos = string.Format("Camera Position: {0}", cameraPos.ToString());
             playPos = string.Format("Player Position: {0}", playerPos.ToString());
+            playSpeed = string.Format("Player Speed: {0}", playerSpeed.ToString());
+            seaLvl = string.Format("Sea Level: {0}", seaLevel.ToString());
             //string playDir = string.Format("Player Direction: {0}", direction);
         }
 
@@ -99,6 +105,12 @@ namespace EarthSim.Components
 
             spriteBatch.DrawString(spriteFont, playPos, new Vector2(33, 73), Color.Black);
             spriteBatch.DrawString(spriteFont, playPos, new Vector2(32, 72), Color.White);
+
+            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(33, 93), Color.Black);
+            spriteBatch.DrawString(spriteFont, playSpeed, new Vector2(32, 92), Color.White);
+
+            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(33, 113), Color.Black);
+            spriteBatch.DrawString(spriteFont, seaLvl, new Vector2(32, 112), Color.White);
 
             /*spriteBatch.DrawString(spriteFont, playDir, new Vector2(33, 93), Color.Black);
             spriteBatch.DrawString(spriteFont, playDir, new Vector2(32, 92), Color.White);*/

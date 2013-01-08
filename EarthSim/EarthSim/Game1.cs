@@ -134,10 +134,10 @@ namespace EarthSim
 
             earthEntity.Update(gameTime);
             oceanEntity.Update(gameTime);
-            if (oceanEntity.GetScale() > 1.01364851)
+            /*if (oceanEntity.GetScale() > 1.01364851)
                 oceanEntity.SetScale(1f);
             else
-                oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);
+                oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);*/
             tankEntity.Update(gameTime);
 
             //camera.Update(earthEntity);
@@ -145,6 +145,8 @@ namespace EarthSim
             _debug.mode = (isPlayerMode) ? "Player" : "Camera";
             _debug.cameraPos = fcamera.Position;
             _debug.playerPos = tankEntity.GetGeoPosition();
+            _debug.playerSpeed = tankEntity.GetSpeed();
+            _debug.seaLevel = oceanEntity.GetScale();
             //_debug.playerDir = tank.GetDirection();
 
             base.Update(gameTime);
@@ -156,10 +158,10 @@ namespace EarthSim
             {
                 if (action == ActionType.Quit)
                     this.Exit();
-                //if (action == ActionType.IncreaseSealevel && sealevel < 1f)
-                ////    sealevel += 0.01f;
-                //if (action == ActionType.DecreaseSealevel && sealevel > -5f)
-                //    sealevel -= 0.01f;
+                if (action == ActionType.IncreaseSealevel && oceanEntity.GetScale() < 1.02)
+                    oceanEntity.SetScale(oceanEntity.GetScale() + 0.0001f);
+                if (action == ActionType.DecreaseSealevel && oceanEntity.GetScale() > 0.995)
+                    oceanEntity.SetScale(oceanEntity.GetScale() - 0.0001f);
                 if (action == ActionType.SwitchMode)
                 {
                     if (this.isPlayerMode) this.isPlayerMode = false;

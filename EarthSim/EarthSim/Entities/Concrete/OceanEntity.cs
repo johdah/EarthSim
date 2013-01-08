@@ -20,7 +20,7 @@ namespace EarthSim.Entities.Concrete
             initializeVertices();
             initializeIndices();
             FixNormals();
-            //ConvertToSphere(radius, width, height);
+            ConvertToSphere(radius, width, height);
             updateData();
         }
 

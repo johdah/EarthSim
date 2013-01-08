@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using EarthSim.Components;
 using EarthSim.Entities.Concrete;
 using EarthSim.Entities;
+using EarthSim.Components.Input;
 
 namespace EarthSim
 {
@@ -38,6 +39,9 @@ namespace EarthSim
 
 
         private SimplePlane simplePlane;
+        private FlyingCamera fcamera;
+
+        private bool isPlayerMode = false;        
 
         public Game1()
         {
@@ -75,6 +79,12 @@ namespace EarthSim
             rs.CullMode = CullMode.None;
             graphics.GraphicsDevice.RasterizerState = rs;
 
+            fcamera = new FlyingCamera();
+
+            InputHandler ip = new InputHandler(this);
+            Components.Add(ip);
+            Services.AddService(typeof(IInputHandler), ip);
+
             base.Initialize();
         }
 
@@ -107,10 +117,10 @@ namespace EarthSim
         protected override void LoadContent()
         {
             effect = new BasicEffect(GraphicsDevice);
-            camera = new Camera(GraphicsDevice);
+            camera = new Camera(GraphicsDevice);            
 
-            earthEntity = new EarthEntity(this, 5f, this.Content.Load<Texture2D>("Entities/earthTexture"));
-            oceanEntity = new OceanEntity(this, 20f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
+            //earthEntity = new EarthEntity(this, 5f, this.Content.Load<Texture2D>("Entities/earthTexture"));
+            oceanEntity = new OceanEntity(this, 200f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
@@ -138,10 +148,16 @@ namespace EarthSim
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            //Read input
+            IInputHandler inputHandler = (IInputHandler)Services.GetService(typeof(IInputHandler));
+            inputAction(inputHandler.getUnhandledActions(), gameTime.ElapsedGameTime.Milliseconds);
 
-            _input.Update();
+            //To make the camera mov           
+            camera.Update(fcamera.Position, fcamera.Rotation);
 
-            earthEntity.Update(gameTime);
+            //_input.Update();
+
+            //earthEntity.Update(gameTime);
             oceanEntity.Update(gameTime);
             tankEntity.Update(gameTime);
 
@@ -152,6 +168,36 @@ namespace EarthSim
             //_debug.playerDir = tank.GetDirection();
 
             base.Update(gameTime);
+        }
+
+        private void inputAction(List<ActionType> actions, float elapsedTime)
+        {
+            foreach (var action in actions)
+            {
+                if (action == ActionType.Quit)
+                    this.Exit();
+                //if (action == ActionType.IncreaseSealevel && sealevel < 1f)
+                ////    sealevel += 0.01f;
+                //if (action == ActionType.DecreaseSealevel && sealevel > -5f)
+                //    sealevel -= 0.01f;
+                if (action == ActionType.SwitchMode)
+                {
+                    //if (this.isPlayerMode) this.isPlayerMode = false;
+                    //else this.isPlayerMode = true;
+                }
+
+                if (isPlayerMode)
+                {
+                    //tank.performAction(action, elapsedTime);
+                }
+                else
+                {
+
+                    fcamera.PerformAction(action, elapsedTime);
+                }
+
+                //airplane.PerformAction(action, elapsedTime);
+            }
         }
 
         /// <summary>
@@ -167,10 +213,10 @@ namespace EarthSim
             effect.View = camera.ViewMatrix;
             effect.World = world;
 
-            earthEntity.Draw(effect);
+            //earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
-            tankEntity.Draw(ref world, ref view, ref projection, ref effect);
+            //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
 
             simplePlane.Draw(ref effect, ref world);
 

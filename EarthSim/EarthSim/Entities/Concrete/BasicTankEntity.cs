@@ -154,10 +154,12 @@ namespace EarthSim.Entities.Concrete
 
             geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoElevation, smoothness);
 
-            leftBackWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude - 1f, leftBackWheelElevation, smoothness);
-            leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude + 1f, leftFrontWheelElevation, smoothness);
-            rightBackWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude - 1f, rightBackWheelElevation, smoothness);
-            rightFrontWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude + 1f, rightFrontWheelElevation, smoothness);
+            // Distance between wheels and center of tank
+            float wheelOffset = 1f;
+            leftBackWheelElevation = _target.GetLocalElevation(geoLatitude + wheelOffset, geoLongitude - wheelOffset, leftBackWheelElevation, smoothness);
+            leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude + wheelOffset, geoLongitude + wheelOffset, leftFrontWheelElevation, smoothness);
+            rightBackWheelElevation = _target.GetLocalElevation(geoLatitude - wheelOffset, geoLongitude - wheelOffset, rightBackWheelElevation, smoothness);
+            rightFrontWheelElevation = _target.GetLocalElevation(geoLatitude - wheelOffset, geoLongitude + wheelOffset, rightFrontWheelElevation, smoothness);
 
             // X rotation is (LB + RB) - (LF + RF)
             xRotation = (leftBackWheelElevation + rightBackWheelElevation)

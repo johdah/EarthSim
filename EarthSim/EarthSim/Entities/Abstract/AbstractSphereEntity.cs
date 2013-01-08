@@ -42,7 +42,6 @@ namespace EarthSim.Entities.Abstract
             for (int i = 0; i < vertices.Length; i++)
             {
                 Vector3 oldPosition = vertices[i].Position;
-                //double ringradius = (float)((height + radius) * Math.Sin(row * Math.PI / yMax));
                 float equatorRadius = radius * ((float)Math.Sin(oldPosition.Z * Math.PI / yMax)
                     + (float)Math.Sin(oldPosition.Y * Math.PI / yMax));
 

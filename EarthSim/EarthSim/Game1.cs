@@ -38,6 +38,7 @@ namespace EarthSim
         private SkyEntity skyEntity;
         private TankEntity tankEntity;
 
+        private BasicTankEntity basicTank;
 
         private bool isPlayerMode = false;        
 
@@ -97,6 +98,7 @@ namespace EarthSim
             oceanEntity = new OceanEntity(this, 25.15f, this.Content.Load<Texture2D>("Entities/oceanTexture"));
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
+            basicTank = new BasicTankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
             world = Matrix.Identity;
         }
@@ -134,7 +136,7 @@ namespace EarthSim
             if (oceanEntity.GetScale() > 1.01364851)
                 oceanEntity.SetScale(1f);
             else
-                oceanEntity.SetScale(oceanEntity.GetScale() + 0.00001f);
+                oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);
             tankEntity.Update(gameTime);
 
             //camera.Update(earthEntity);
@@ -195,7 +197,9 @@ namespace EarthSim
             earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
-            tankEntity.Draw(ref world, ref view, ref projection, ref effect);
+            //tankEntity.Draw(ref world, ref view, ref projection, ref effect);
+            basicTank.Draw(world, camera.ViewMatrix, camera.ViewProjectionMatrix);
+
 
             base.Draw(gameTime);
         }

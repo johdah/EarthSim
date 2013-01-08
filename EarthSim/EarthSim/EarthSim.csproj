@@ -116,6 +116,7 @@
     <Compile Include="Entities\Abstract\AbstractEntity.cs" />
     <Compile Include="Entities\Abstract\AbstractPlayerEntity.cs" />
     <Compile Include="Entities\Abstract\AbstractSphereEntity.cs" />
+    <Compile Include="Entities\Concrete\BasicTankEntity.cs" />
     <Compile Include="Entities\Concrete\EarthEntity.cs" />
     <Compile Include="Entities\Concrete\OceanEntity.cs" />
     <Compile Include="Entities\Concrete\SkyEntity.cs" />

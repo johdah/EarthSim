@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using EarthSim.Components;
 using EarthSim.Entities.Concrete;
+using EarthSim.Entities;
 
 namespace EarthSim
 {
@@ -34,6 +35,9 @@ namespace EarthSim
         private OceanEntity oceanEntity;
         private SkyEntity skyEntity;
         private TankEntity tankEntity;
+
+
+        private SimplePlane simplePlane;
 
         public Game1()
         {
@@ -110,6 +114,8 @@ namespace EarthSim
             //skyEntity = new SkyEntity(this, 5f, this.Content.Load<Texture2D>("Entities/skyTexture"));
             tankEntity = new TankEntity(this, this.Content.Load<Model>("Entities/Tank/tank"), earthEntity);
 
+            simplePlane = new SimplePlane(GraphicsDevice, Vector3.Zero, Quaternion.Identity, 1);
+
             world = Matrix.Identity;
         }
 
@@ -139,7 +145,7 @@ namespace EarthSim
             oceanEntity.Update(gameTime);
             tankEntity.Update(gameTime);
 
-            camera.Update(earthEntity);
+            //camera.Update(earthEntity);
 
             _debug.cameraPos = camera.Position;
             _debug.playerPos = tankEntity.GetPosition();
@@ -157,14 +163,16 @@ namespace EarthSim
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             world = Matrix.Identity;
-            effect.Projection = projection;
-            effect.View = view;
+            effect.Projection = camera.ViewProjectionMatrix;
+            effect.View = camera.ViewMatrix;
             effect.World = world;
 
             earthEntity.Draw(effect);
             oceanEntity.Draw(effect);
             //skyEntity.Draw(effect);
             tankEntity.Draw(ref world, ref view, ref projection, ref effect);
+
+            simplePlane.Draw(ref effect, ref world);
 
             base.Draw(gameTime);
         }

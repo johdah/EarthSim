@@ -14,6 +14,7 @@ namespace EarthSim.Entities.Abstract
         protected Vector3 Position;
         protected Quaternion Rotation;
         protected Matrix World;
+        protected float Scale;
 
         public AbstractEntity(Game game)
         {

@@ -12,6 +12,8 @@ namespace EarthSim.Entities.Concrete
     {
         #region Fields
 
+        AbstractSphereEntity _target;
+
         // The XNA framework Model object that we are going to display.
         Model tankModel;
 
@@ -51,6 +53,12 @@ namespace EarthSim.Entities.Concrete
         float turretRotationValue;
         float cannonRotationValue;
         float hatchRotationValue;
+
+        // Current elevations
+        private float leftBackWheelElevation;
+        private float rightBackWheelElevation;
+        private float leftFrontWheelElevation;
+        private float rightFrontWheelElevation;
 
         #endregion
         #region Properties
@@ -106,6 +114,9 @@ namespace EarthSim.Entities.Concrete
             : base(game)
         {
             this.tankModel = model;
+            this._target = target;
+            this.Position = new Vector3(0.0f, 0.0f, 0.0f);
+            this.Scale = 0.01f;
 
             // Look up shortcut references to the bones we are going to animate.
             leftBackWheelBone = tankModel.Bones["l_back_wheel_geo"];
@@ -133,6 +144,16 @@ namespace EarthSim.Entities.Concrete
             boneTransforms = new Matrix[tankModel.Bones.Count];
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (geoLatitude > 90 || geoLatitude < -90) geoLatitude = 1f;
+            if (geoLongitude > 90 || geoLongitude < -90) geoLongitude = 1f;
+
+            leftBackWheelElevation = 4f;
+
+            base.Update(gameTime);
+        }
+
         public void Draw(Matrix world, Matrix view, Matrix projection)
         {
             // Set the world matrix as the root transform of the model.
@@ -146,7 +167,7 @@ namespace EarthSim.Entities.Concrete
             Matrix hatchRotation = Matrix.CreateRotationX(hatchRotationValue);
 
             // Apply matrices to the relevant bones.
-            leftBackWheelBone.Transform = wheelRotation * leftBackWheelTransform;
+            leftBackWheelBone.Transform = wheelRotation * leftBackWheelTransform * Matrix.CreateTranslation(0,leftBackWheelElevation,0);
             rightBackWheelBone.Transform = wheelRotation * rightBackWheelTransform;
             leftFrontWheelBone.Transform = wheelRotation * leftFrontWheelTransform;
             rightFrontWheelBone.Transform = wheelRotation * rightFrontWheelTransform;
@@ -164,11 +185,23 @@ namespace EarthSim.Entities.Concrete
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = boneTransforms[mesh.ParentBone.Index];
+                    //effect.World = boneTransforms[mesh.ParentBone.Index];
                     effect.View = view;
                     effect.Projection = projection;
-
                     effect.EnableDefaultLighting();
+
+                    Matrix tankRotation;
+                    float pitch = 0;
+                    float roll = 0;
+                    float yaw = 0;
+                    
+                    //effect.World = boneTransforms[mesh.ParentBone.Index];
+                    GetRotationForModel(out pitch, out roll, out yaw, geoLatitude, geoLongitude);
+                    Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll, out Rotation);
+                    Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
+
+                    effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(Scale) * tankRotation *
+                            Matrix.CreateTranslation(_target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, _target.GetRadius()));
                 }
 
                 mesh.Draw();

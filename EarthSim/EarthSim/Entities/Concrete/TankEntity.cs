@@ -181,7 +181,7 @@ namespace EarthSim.Entities.Concrete
 
                     effect.EnableDefaultLighting();
 
-                    /*Matrix tankRotation;
+                    Matrix tankRotation;
                     float pitch = 0;
                     float roll = 0;
                     float yaw = 0;
@@ -195,7 +195,7 @@ namespace EarthSim.Entities.Concrete
                     Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
 
                     effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(100f) * tankRotation *
-                        Matrix.CreateTranslation(Target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, Target.GetRadius()));*/
+                        Matrix.CreateTranslation(Target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation, Target.GetRadius()));
                 }
 
                 mesh.Draw();

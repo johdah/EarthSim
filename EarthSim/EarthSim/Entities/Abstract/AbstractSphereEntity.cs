@@ -156,6 +156,11 @@ namespace EarthSim.Entities.Abstract
             base.Update(gameTime);
         }
 
+        public float GetRadius()
+        {
+            return radius;
+        }
+
         public float GetScale()
         {
             return Scale;

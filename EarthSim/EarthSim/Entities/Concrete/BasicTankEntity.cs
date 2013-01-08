@@ -158,10 +158,10 @@ namespace EarthSim.Entities.Concrete
 
             geoElevation = _target.GetLocalElevation(geoLatitude, geoLongitude, geoElevation, smoothness);
 
-            leftBackWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude - 1f, leftBackWheelElevation, smoothness);
-            leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude + 1f, leftFrontWheelElevation, smoothness);
-            rightBackWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude - 1f, rightBackWheelElevation, smoothness);
-            rightFrontWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude + 1f, rightFrontWheelElevation, smoothness);
+            leftBackWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude - 1f, leftBackWheelElevation, smoothness);
+            leftFrontWheelElevation = _target.GetLocalElevation(geoLatitude + 1f, geoLongitude + 1f, leftFrontWheelElevation, smoothness);
+            rightBackWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude - 1f, rightBackWheelElevation, smoothness);
+            rightFrontWheelElevation = _target.GetLocalElevation(geoLatitude - 1f, geoLongitude + 1f, rightFrontWheelElevation, smoothness);
 
             // X rotation is (LB + RB) - (LF + RF)
             xRotation = (leftBackWheelElevation + rightBackWheelElevation)
@@ -223,8 +223,12 @@ namespace EarthSim.Entities.Concrete
                     Matrix.CreateFromQuaternion(ref Rotation, out tankRotation);
                     this.Position = _target.GetGeoPosition(geoLatitude, geoLongitude, geoElevation);
 
-                    effect.World = boneTransforms[mesh.ParentBone.Index] * Matrix.CreateScale(Scale) * tankRotation *
-                            Matrix.CreateTranslation(Position);
+                    effect.World = boneTransforms[mesh.ParentBone.Index]
+                        * Matrix.CreateScale(Scale)
+                        * Matrix.CreateFromAxisAngle(Vector3.UnitX, xRotation)
+                        * Matrix.CreateFromAxisAngle(Vector3.UnitZ, -zRotation) 
+                        * tankRotation
+                        * Matrix.CreateTranslation(Position);
                 }
 
                 mesh.Draw();

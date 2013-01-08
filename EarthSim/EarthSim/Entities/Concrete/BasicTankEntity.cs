@@ -115,8 +115,10 @@ namespace EarthSim.Entities.Concrete
         {
             this.tankModel = model;
             this._target = target;
-            this.Position = new Vector3(0.0f, 0.0f, 0.0f);
-            this.Scale = 0.01f;
+            //this.Position = new Vector3(0.0f, 0.0f, 0.0f);
+            this.Scale = 0.001f;
+            geoLatitude = 57;
+            geoLongitude = 14;
 
             // Look up shortcut references to the bones we are going to animate.
             leftBackWheelBone = tankModel.Bones["l_back_wheel_geo"];

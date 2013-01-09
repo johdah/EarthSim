@@ -187,7 +187,7 @@ namespace EarthSim.Entities.Concrete
             Matrix hatchRotation = Matrix.CreateRotationX(hatchRotationValue);
 
             // Apply matrices to the relevant bones.
-            leftBackWheelBone.Transform = wheelRotation * leftBackWheelTransform * Matrix.CreateTranslation(0,leftBackWheelElevation,0);
+            leftBackWheelBone.Transform = wheelRotation * leftBackWheelTransform;
             rightBackWheelBone.Transform = wheelRotation * rightBackWheelTransform;
             leftFrontWheelBone.Transform = wheelRotation * leftFrontWheelTransform;
             rightFrontWheelBone.Transform = wheelRotation * rightFrontWheelTransform;

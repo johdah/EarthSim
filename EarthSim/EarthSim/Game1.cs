@@ -133,10 +133,10 @@ namespace EarthSim
             oceanEntity.Update(gameTime);
             if (isAutoSeaLevel)
             {
-                if (oceanEntity.GetScale() > 1.01364851)
+                if (oceanEntity.GetScale() > 1.02)
                     oceanEntity.SetScale(1f);
                 else
-                    oceanEntity.SetScale(oceanEntity.GetScale() + 0.000001f);
+                    oceanEntity.SetScale(oceanEntity.GetScale() + 0.00001f);
             }
             tankEntity.Update(gameTime);
 
